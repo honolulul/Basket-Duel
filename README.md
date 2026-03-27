@@ -35,9 +35,9 @@ Basé sur notre cahier des charges et nos modélisations UML :
 
 ## 4- Structure du dépôt
 L'architecture du projet respecte les standards définis lors de la phase de conception :
-* 📁 `/src` : Code source Java (Packages `Modele`, `Vue`, `Controleur`).
-* 📁 `/doc` : Documentation technique (Diagrammes UML complets, Cahier des charges).
-* 📁 `/assets` : Ressources graphiques (Sprites, Images).
+*  `/src` : Code source Java (Packages `Modele`, `Vue`, `Controleur`).
+*  `/doc` : Documentation technique (Diagrammes UML complets, Cahier des charges).
+*  `/assets` : Ressources graphiques (Sprites, Images).
 
 ## 5- Installation et Lancement
 Pour tester le projet en local :
