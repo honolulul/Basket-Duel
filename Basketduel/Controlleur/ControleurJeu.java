@@ -181,6 +181,59 @@ public class ControleurJeu {
         this.bonusList = terrain.genererBonus(panier, nb_bonus_par_tour);
     }
 
-    // Getters restants ...
-    public int getScoreJoueur() { return partie.getJoueurActif().getScore(); } // Lu depuis la partie
+    // Getters (pour la Vue)
+
+    public Terrain getTerrain() {
+        return terrain;
+    }
+
+    public Ballon getBallon() {
+        return ballon;
+    }
+
+    public Panier getPanier() {
+        return panier;
+    }
+
+    public List<Bonus> getBonusList() {
+        return bonusList;
+    }
+
+    public int getScoreJoueur() {
+        return scoreJoueur;
+    }
+
+    public int getScoreIA() {
+        return scoreIA;
+    }
+
+    public int getTourCourant() {
+        return tourCourant;
+    }
+
+    public int getToursTotal() {
+        return toursTotal;
+    }
+
+    public boolean isPartieTerminee() {
+        return partieTerminee;
+    }
+
+    public double getFacteurTrajectoireProchainTir() {
+        return facteurTrajectoireProchainTir;
+    }
+
+    // --- Getters système de visée (utilisés par TerrainVue) ---
+
+    public PhaseVisee getPhaseVisee() {
+        return phaseVisee;
+    }
+
+    public double getAngleCourant() {
+        return angleCourant;
+    }
+
+    public double getJaugePuissance() {
+        return jaugePuissance;
+    }
 }

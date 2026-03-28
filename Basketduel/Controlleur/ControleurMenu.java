@@ -5,6 +5,11 @@ import Modele.JoueurIA; // Import direct plus propre
 import Modele.Partie;
 import Vue.FenetrePrincipale;
 
+import Modele.Joueur;
+import Modele.Partie;
+import Vue.FenetrePrincipale;
+
+
 public class ControleurMenu {
 
     private static final int PORT_DEFAUT   = 5000;
