@@ -288,69 +288,56 @@ public class ControleurJeu {
 
     // Getters (pour la Vue)
 
-    // Le terrain de jeu (dimensions et limites).
     public Terrain getTerrain() {
         return terrain;
     }
 
-    // Le ballon en cours de jeu.
     public Ballon getBallon() {
         return ballon;
     }
 
-    // Le panier cible du tour courant.
     public Panier getPanier() {
         return panier;
     }
 
-    // La liste des bonus/malus actifs.
     public List<Bonus> getBonusList() {
         return bonusList;
     }
 
-    // Score actuel du joueur humain.
     public int getScoreJoueur() {
         return scoreJoueur;
     }
 
-    // Score actuel de l'IA.
     public int getScoreIA() {
         return scoreIA;
     }
 
-    // Numéro du tour courant.
     public int getTourCourant() {
         return tourCourant;
     }
 
-    // Nombre total de tours de la partie.
     public int getToursTotal() {
         return toursTotal;
     }
 
-    // true si la partie est terminée.
     public boolean isPartieTerminee() {
         return partieTerminee;
     }
 
-    // Facteur de trajectoire qui sera appliqué au prochain tir.
     public double getFacteurTrajectoireProchainTir() {
         return facteurTrajectoireProchainTir;
     }
 
     // --- Getters système de visée (utilisés par TerrainVue) ---
 
-    // Phase courante de visée (VISEE, PUISSANCE, TIR).
     public PhaseVisee getPhaseVisee() {
         return phaseVisee;
     }
 
-    // Angle courant de la flèche de visée (degrés).
     public double getAngleCourant() {
         return angleCourant;
     }
 
-    // Puissance courante de la jauge (0.0 à 1.0).
     public double getJaugePuissance() {
         return jaugePuissance;
     }
