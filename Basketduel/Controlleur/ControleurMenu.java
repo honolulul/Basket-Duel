@@ -1,5 +1,5 @@
 package Controlleur;
-
+import Modele.Partie;
 import Modele.Joueur;
 import Modele.JoueurIA; // Import direct plus propre
 import Modele.Partie;
