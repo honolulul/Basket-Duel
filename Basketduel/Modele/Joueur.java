@@ -1,68 +1,66 @@
 package Modele;
 
 public class Joueur {
-   private String nom;
-   private int score;
-   private boolean estActif;
-   private Ballon ballon;
-   private double x;
-   private double y;
-   private double angle;
-   private double puissance;
+    private String nom;
+    private int score;
+    private boolean estActif;
+    private final double x = 100.0; 
+    private final double y = 450.0;
+    
+    private Ballon ballon;
+    private double angle;
+    private double puissance;
 
-   public Joueur(String var1, double var2, double var4) {
-      this.nom = var1;
-      this.x = var2;
-      this.y = var4;
-      this.score = 0;
-      this.estActif = false;
-      this.angle = (double)0.0F;
-      this.puissance = (double)0.0F;
-      this.ballon = new Ballon(var2, var4);
-   }
+    public Joueur() {
+        this.nom ="joueur";
+        this.score = 0;
+        this.estActif = false;
+        this.ballon = new Ballon(this.x, this.y);
+    }
+    public void setActif(boolean actif) {
+        this.estActif = actif;
+    }
+    public void marquerPanier(int points) {
+        this.score += points;
+    }
+    
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+    public int getScore() { 
+        return score; 
+    }
 
-   public void setActif(boolean var1) {
-      this.estActif = var1;
-   }
+    public boolean isActif() {
+        return estActif;
+    }
 
-   public void marquerPanier(int var1) {
-      this.score += var1;
-   }
+    public void setTir(double angle, double puissance) {
+        this.angle = angle;
+        this.puissance = puissance;
+    }
 
-   public int getScore() {
-      return this.score;
-   }
+    public String getNom() {
+        return nom;
+    }
 
-   public boolean isActif() {
-      return this.estActif;
-   }
+    public double getX() {
+        return x;
+    }
 
-   public void setTir(double var1, double var3) {
-      this.angle = var1;
-      this.puissance = var3;
-   }
+    public double getY() {
+        return y;
+    }
 
-   public String getNom() {
-      return this.nom;
-   }
+    public double getAngle() {
+        return angle;
+    }
 
-   public double getX() {
-      return this.x;
-   }
+    public double getPuissance() {
+        return puissance;
+    }
 
-   public double getY() {
-      return this.y;
-   }
-
-   public double getAngle() {
-      return this.angle;
-   }
-
-   public double getPuissance() {
-      return this.puissance;
-   }
-
-   public Ballon getBallon() {
-      return this.ballon;
-   }
+    public Ballon getBallon() {
+        return ballon;
+    }
 }
