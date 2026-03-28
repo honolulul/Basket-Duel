@@ -4,71 +4,49 @@ import java.util.Random;
 
 public class IntelligenceArtificielle {
 
-    private int niveau; // 1 = Facile, 2 = Moyen, 3 = Difficile
-    
-    public IntelligenceArtificielle(int diff) {
-        this.niveau = diff;
-    }
-
-    // Calcul de l'angle et de la force pour que l'IA tire
-    public double[] calculerTir(double xJoueur, double yJoueur, double xPanier, double yPanier) {
+    public static double[] calculerTir(double xJoueur, double yJoueur, double xPanier, double yPanier, double difficulte) {
+        double dx = xPanier - xJoueur;
+        double dy = yPanier - yJoueur;
+                                       
+        double g = Ballon.GRAVITE;
+        
         Random rand = new Random();
+        // Choix d'un angle aléatoire en cloche entre 45 et 70 degrés
+        double angleDeg = 45 + rand.nextDouble() * 25; 
+        double angleRad = Math.toRadians(angleDeg);
         
-        // distance entre joueur et panier
-        double distanceX = Math.abs(xPanier - xJoueur);
-        // attention l'axe Y est inversé sur l'écran par rapport aux maths
-        double distanceY = yJoueur - yPanier; 
+        double denominateur = dy + dx * Math.tan(angleRad);
         
-        double direction = 1.0;
-        if (xPanier < xJoueur) {
-            direction = -1.0; // on tire vers la gauche
+        // Si denominateur est <= 0, l'angle choisi ne permet pas d'atteindre la cible
+        // On ajuste l'angle jusqu'à trouver une solution
+        int tentatives = 0;
+        while (denominateur <= 0 && tentatives < 20) {
+            angleDeg += 2; // on augmente l'angle pour avoir une cloche plus haute
+            angleRad = Math.toRadians(angleDeg);
+            denominateur = dy + dx * Math.tan(angleRad);
+            tentatives++;
         }
-
-        // On choisi un angle au pif entre 45 et 80 degrés
-        // pour que la courbe en l'air soit jolie
-        double angleRad = Math.toRadians(45 + rand.nextInt(35));
         
-        // Formule de la trajectoire parabolique pour trouver la vitesse (v0)
-        // v0 = sqrt( (g * x^2) / (2 * cos^2(angle) * (x * tan(angle) - y)) )
-        double g = Ballon.GRAVITE; // on recupere la gravite du physicien
+        // Sécurité si aucune trajectoire trouvée (improbable si le panier est à portée)
+        if (denominateur <= 0) {
+            denominateur = 1.0; 
+        }
+        
+        double numerateur = 0.5 * g * dx * dx;
         double cosA = Math.cos(angleRad);
-        double tanA = Math.tan(angleRad);
         
-        double leBas = 2 * (cosA * cosA) * (distanceX * tanA - distanceY);
+        double v0_carre = numerateur / (cosA * cosA * denominateur);
+        double puissance = Math.sqrt(v0_carre);
         
-        double forceTir = 0;
-        if (leBas > 0) {
-            forceTir = Math.sqrt((g * distanceX * distanceX) / leBas);
-        } else {
-            forceTir = distanceX; // securite au cas ou
+        // Ajout d'une marge d'erreur basée sur la difficulté
+        if (difficulte > 0) {
+            double erreurAngle = (rand.nextDouble() * 10 - 5) * difficulte; // +/- 5 degrés max
+            double erreurPuissance = (rand.nextDouble() * 50 - 25) * difficulte; // +/- 25 pixels/s max
+            
+            angleDeg += erreurAngle;
+            puissance += erreurPuissance;
         }
-
-        // On rajoute de l'erreur selon la difficulte pour pas que l'ordinateur soit invincible
-        // plus le niveau est grand, plus on divise l'erreur (donc IA plus forte)
-        double erreurForce = (rand.nextDouble() * 30) / niveau;
-        double erreurAngle = (rand.nextDouble() * 10) / niveau;
-
-        forceTir += erreurForce;
         
-        double angleFinal = Math.toDegrees(angleRad) + erreurAngle;
-        
-        // si le panier est à gauche, on inverse l'angle pour tirer derriere
-        if (direction < 0) {
-            angleFinal = 180 - angleFinal;
-        }
-
-        double[] resultat = new double[2];
-        resultat[0] = angleFinal;
-        resultat[1] = forceTir;
-        
-        return resultat;
-    }
-
-    public int getNiveau() {
-        return niveau;
-    }
-
-    public void setNiveau(int niveau) {
-        this.niveau = niveau;
+        return new double[]{angleDeg, puissance};
     }
 }
