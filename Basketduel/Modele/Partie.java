@@ -33,6 +33,16 @@ public class Partie {
         System.out.println(actuel.getNom() + " effectue son tir !");
     }
 
+    public void resetBallonPartie() {
+        Joueur actuel = getJoueurActif();
+        actuel.getBallon().setPosition(actuel.getX(), actuel.getY());
+        actuel.getBallon().setEnMouvement(false);
+    }
+
+    public Joueur getJoueurActif() {
+        return j1.isActif() ? j1 : j2;
+    }
+
     public boolean verifierwiner(Joueur j, int score) {
         if (j.getScore() >= score) {
             return true;
