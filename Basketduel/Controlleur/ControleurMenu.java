@@ -2,8 +2,8 @@ package Controlleur;
 
 import Modele.Joueur;
 import Modele.Partie;
+import Modele.JoueurIA;
 import Vue.FenetrePrincipale;
-
 
 public class ControleurMenu {
 
@@ -11,7 +11,6 @@ public class ControleurMenu {
     private static final int TOURS_DEFAUT  = 10; 
     private static final int NIVEAU_IA_DEF = 1;   // 1=Facile 2=Moyen 3=Difficile
 
- 
     private final FenetrePrincipale fenetre;
 
     private String  pseudoJ1       = "Joueur 1";
@@ -26,7 +25,6 @@ public class ControleurMenu {
     private ControleurJeu controleurJeu;
     private ReseauManager reseauManager;
 
- 
     public ControleurMenu(FenetrePrincipale fenetre) {
         this.fenetre = fenetre;
     }
@@ -47,10 +45,11 @@ public class ControleurMenu {
         if (reseauManager != null) reseauManager.fermerTout();
         System.exit(0);
     }
-am niveauIA      1=Facile 2=Moyen 3=Difficile (ignoré si pas IA)
 
+    
     public void validerParametres(String pseudo1, String pseudo2,
-                                   int pointsVict, String mode, int niveauIA) {
+                                  int pointsVict, String mode, int niveauIA) {
+
         this.pseudoJ1       = (pseudo1 == null || pseudo1.isBlank()) ? "Joueur 1" : pseudo1.trim();
         this.pseudoJ2       = (pseudo2 == null || pseudo2.isBlank()) ? "Joueur 2" : pseudo2.trim();
         this.pointsVictoire = Math.max(1, pointsVict);
@@ -63,7 +62,6 @@ am niveauIA      1=Facile 2=Moyen 3=Difficile (ignoré si pas IA)
         fenetre.setModeAdversaire(this.modeAdversaire);
     }
 
-
     public void lancerPartieLocale() {
         creerPartieEtControleur();
         fenetre.lancerPartie();
@@ -72,6 +70,7 @@ am niveauIA      1=Facile 2=Moyen 3=Difficile (ignoré si pas IA)
     public boolean lancerPartieServeur() {
         reseauManager = new ReseauManager();
         boolean ok = reseauManager.hebergerActif(portReseau);
+
         if (ok) {
             fenetre.setModeAdversaire("RESEAU");
             creerPartieEtControleur();
@@ -81,8 +80,8 @@ am niveauIA      1=Facile 2=Moyen 3=Difficile (ignoré si pas IA)
     }
 
     public boolean rejoindrePartieReseau(String pseudo, String ip, int port) {
-        this.pseudoJ2  = (pseudo == null || pseudo.isBlank()) ? "Joueur 2" : pseudo.trim();
-        this.ipServeur = ip;
+        this.pseudoJ2   = (pseudo == null || pseudo.isBlank()) ? "Joueur 2" : pseudo.trim();
+        this.ipServeur  = ip;
         this.portReseau = port;
 
         fenetre.setPseudoJ2(this.pseudoJ2);
@@ -90,6 +89,7 @@ am niveauIA      1=Facile 2=Moyen 3=Difficile (ignoré si pas IA)
 
         reseauManager = new ReseauManager();
         boolean ok = reseauManager.rejoindrePartie(ip, port);
+
         if (ok) {
             creerPartieEtControleur();
             fenetre.lancerPartie();
@@ -106,17 +106,15 @@ am niveauIA      1=Facile 2=Moyen 3=Difficile (ignoré si pas IA)
         fenetre.relancerPartie();
     }
 
-  
     private void creerPartieEtControleur() {
+
         // Création des joueurs
         Joueur j1 = new Joueur();
         j1.setNom(pseudoJ1);
 
         Joueur j2;
         if ("IA".equals(modeAdversaire)) {
-        
-            Modele.JoueurIA ia = new Modele.JoueurIA(pseudoJ2, niveauIA);
-            j2 = ia;
+            j2 = new JoueurIA(pseudoJ2, niveauIA);
         } else {
             j2 = new Joueur();
             j2.setNom(pseudoJ2);
@@ -126,20 +124,18 @@ am niveauIA      1=Facile 2=Moyen 3=Difficile (ignoré si pas IA)
         this.partie = new Partie(j1, j2);
         this.partie.setpseudoJoueur(pseudoJ1); // synchronise le nom dans Partie
 
-    
         int largeur = fenetre.getWidth()  > 0 ? fenetre.getWidth()  : 800;
         int hauteur = fenetre.getHeight() > 0 ? fenetre.getHeight() : 600;
 
         this.controleurJeu = new ControleurJeu(largeur, hauteur, niveauIA, TOURS_DEFAUT);
 
-        // Partage des objets avec FenetrePrincipale pour que TerrainVue y accède
         fenetre.setPartie(this.partie);
         fenetre.setControleurJeu(this.controleurJeu);
+
         if (reseauManager != null) {
             fenetre.setReseauManager(this.reseauManager);
         }
     }
-
 
     public String  getPseudoJ1()       { return pseudoJ1; }
     public String  getPseudoJ2()       { return pseudoJ2; }
