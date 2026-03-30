@@ -7,8 +7,8 @@ import Vue.FenetrePrincipale;
 
 import Modele.Joueur;
 import Modele.Partie;
+import Modele.JoueurIA;
 import Vue.FenetrePrincipale;
-
 
 public class ControleurMenu {
 
